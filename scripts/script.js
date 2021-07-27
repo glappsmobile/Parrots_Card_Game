@@ -27,9 +27,21 @@ function askSize(){
 }
 
 function reveal(card){
+        card.onClick = unreveal(card);
+
     let img = card.querySelector("img");
-    let index = getChildIndex(card)-1;
+    let index = getChildIndex(card) - 1;
     img.src = `images/${cards[index]}.gif`;
+    card.setAttribute( "onClick", "unreveal(this)" );
+
+}
+
+function unreveal(card) {
+    let img = card.querySelector("img");
+    let index = getChildIndex(card) - 1;
+    img.src = `images/front.png`;
+    card.setAttribute( "onClick", "reveal(this)" );
+
 }
 
 function getChildIndex(child){
@@ -74,6 +86,6 @@ function defineCards(length){
 
 let cards = [];
 
-askSize();
-//gerarCartas(10);
+//askSize();
+gerarCartas(4);
 
