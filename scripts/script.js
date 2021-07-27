@@ -33,6 +33,6 @@ function reveal(card){
 }
 
 
-//askSize();
-gerarCartas(10);
+askSize();
+//gerarCartas(10);
 
