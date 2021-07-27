@@ -24,7 +24,7 @@ h1 {
     flex-wrap: wrap;
     flex-direction: row;
     width: 70vw;
-
+    margin-top: 47px;
 }
 
 .card {
@@ -40,7 +40,6 @@ h1 {
     border: 1px solid #99CEA8;
     background-color: #A7E9AF;
 }
-
 
 .card img {
     width: 80%;

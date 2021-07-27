@@ -3,11 +3,10 @@ function gerarCartas(length){
 
     for(i = 0; i < length; i++){
      container.innerHTML += 
-     `<li class="card">
+     `<li class="card" onclick="reveal(this)">
         <img src="images/front.png"/>
      </li>`;
     }
-
 }
 
 function askSize(){
@@ -26,5 +25,14 @@ function askSize(){
     }
 }
 
-askSize();
+function reveal(card){
+    let img = card.querySelector("img");
+    let randomIndex = Math.floor(Math.random() * parrots.length);
+    console.log(randomIndex);
+    img.src = `images/${parrots[randomIndex]}.gif`;
+}
+
+
+//askSize();
+gerarCartas(10);
 
