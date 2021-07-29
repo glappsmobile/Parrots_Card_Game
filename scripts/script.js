@@ -5,7 +5,7 @@ let match = "";
 let lastCard;
 let block = false;
 let score = 0;
-let playCount = 0;
+let playsCount = 0;
 let maxScore = 0;
 
 function gerarCartas(length){
@@ -43,9 +43,15 @@ function askSize(){
 }
 
 function reveal(card){
+    playsCount++;
+
     console.log("-----");
     console.log("block: "+block);
-    playCount++;
+    console.log("score: "+score);
+    console.log("plays: "+playsCount);
+    console.log("current card:");
+    console.log(card);
+
     if (!block){
         let index = getChildIndex(card);
         let cardValue = cards[index];
@@ -56,6 +62,7 @@ function reveal(card){
         if (lastCard !== undefined){
             if (cardValue == match) {
                 console.log("MATCH");
+                card.setAttribute( "onClick", "");
                 match = "";
                 lastCard = undefined;
                 score += 2;
@@ -86,7 +93,7 @@ function blockAction(){
 
 function gameOver(){
     setTimeout(() => {  
-        alert(`Você ganhou em ${playCount} jogadas!`);
+        alert(`Você ganhou em ${playsCount} jogadas!`);
     }, delay);
 }
 
@@ -151,6 +158,6 @@ function defineCards(length){
 }
 
 
-askSize();
-//gerarCartas(6);
+//askSize();
+gerarCartas(6);
 

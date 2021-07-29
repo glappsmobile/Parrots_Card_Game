@@ -79,3 +79,16 @@ h1 {
 strong {
     font-weight: bold;
 }
+
+.unselectable {
+    user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+}
+
+img {
+    pointer-events: none;
+}
+
