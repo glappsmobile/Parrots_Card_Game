@@ -1,15 +1,48 @@
-let inSelection = false;
-
 let cards = [];
 let match = "";
-let lastCard;
+let lastCard = undefined;
 let block = false;
-let score = 0;
-let playsCount = 0;
-let maxScore = 0;
+let cFlippeds = 0;
+let cPlays = 0;
+let cCards = 0;
+
+function askSize(){
+    let isPair = false;
+    let isCorrectLength = false;
+    let length;
+    
+    while(!isPair || !isCorrectLength) {
+        length = Number(prompt("Com quantas cartas deseja jogar? \n (Par entre 4 e 14)"));
+        isPair = Boolean(length % 2 === 0);
+        isCorrectLength = Boolean(length >= 4 && length <= 14);
+    } 
+
+    cCards = length;
+    gerarCartas(length);
+}
+
+function defineCards(length){
+    let half = length/2;
+
+    for (i = 0; i < half; i++){
+
+        let parrotIndex = Math.floor(Math.random() * parrots.length);
+        let card = parrots[parrotIndex];
+
+        if (!cards.includes(card)) {
+            cards[i] = card;
+        } else {
+            i --;
+        }
+    }
+
+    cards = doubleArray(cards);
+    cards.sort(comparador);
+}
+
 
 function gerarCartas(length){
-    maxScore = length;
+    cCards = length;
 
     defineCards(length);
     let container = document.querySelector(".ctn-cards");
@@ -17,62 +50,39 @@ function gerarCartas(length){
     for(i = 0; i < length; i++){
      container.innerHTML += 
      `<li class="card" onclick="reveal(this)">
-     <div class="front-face face">
-        <img src="images/front.png"/>
-     </div>
-     <div class="back-face face">
-        <img src="images/${cards[i]}.gif"/>
-     </div>
-  
+        <div class="front-face face">
+            <img src="images/front.png"/>
+        </div>
+        <div class="back-face face">
+            <img src="images/${cards[i]}.gif"/>
+        </div>
      </li>`;
     }
 }
 
-function askSize(){
-    let length = Number(prompt("Com quantas cartas deseja jogar? (Par entre 4 e 14)"));
-    let isPair = Boolean(length % 2 === 0);
-    let isCorrectLength = Boolean(length >= 4 && length <= 14);
 
-    if(isPair && isCorrectLength) {
-        maxScore = length;
-        console.log(maxScore);
-        gerarCartas(length);
-    } else {
-        askSize();
-    }
-}
 
 function reveal(card){
-    playsCount++;
-
-    console.log("-----");
-    console.log("block: "+block);
-    console.log("score: "+score);
-    console.log("plays: "+playsCount);
-    console.log("current card:");
-    console.log(card);
-
     if (!block){
+        cPlays++;
+
         let index = getChildIndex(card);
         let cardValue = cards[index];
-        card.classList.add("active");
-        console.log("last card: ");
-        console.log(lastCard);
 
+        card.classList.add("active");
+   
         if (lastCard !== undefined){
+
             if (cardValue == match) {
-                console.log("MATCH");
                 card.setAttribute( "onClick", "");
                 match = "";
-                lastCard = undefined;
-                score += 2;
-                if (score == maxScore) gameOver();
-
+                cFlippeds += 2;
+                if (cFlippeds == cCards) gameOver();
             } else {
-                console.log("ERRADO");
                 unreveal(card, lastCard);
                 blockAction();
             }
+
             lastCard = undefined;
         }else{
             lastCard = card;
@@ -93,7 +103,7 @@ function blockAction(){
 
 function gameOver(){
     setTimeout(() => {  
-        alert(`Você ganhou em ${playsCount} jogadas!`);
+        alert(`Você ganhou em ${cPlays} jogadas!`);
     }, delay);
 }
 
@@ -138,26 +148,9 @@ function getMaxScore(){
 
 }
 
-function defineCards(length){
-    let half = length/2 - 1;
-
-    for (i = 0; i <= half; i++){
-
-        let parrotIndex = Math.floor(Math.random() * parrots.length);
-        let card = parrots[parrotIndex];
-
-        if (!cards.includes(card)) {
-            cards[i] = card;
-        } else {
-            i --;
-        }
-    }
-
-    cards = doubleArray(cards);
-    cards.sort(comparador);
-}
 
 
-//askSize();
-gerarCartas(6);
+
+askSize();
+//gerarCartas(6);
 
