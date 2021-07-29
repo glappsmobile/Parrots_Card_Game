@@ -12,7 +12,7 @@ function gerarCartas(length){
     maxScore = length;
 
     defineCards(length);
-    let container = document.querySelectora(".ctn-cards");
+    let container = document.querySelector(".ctn-cards");
 
     for(i = 0; i < length; i++){
      container.innerHTML += 
