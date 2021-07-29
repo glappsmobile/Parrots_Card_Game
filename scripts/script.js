@@ -12,7 +12,7 @@ function gerarCartas(length){
     maxScore = length;
 
     defineCards(length);
-    let container = document.querySelector(".ctn-cards");
+    let container = document.querySelectora(".ctn-cards");
 
     for(i = 0; i < length; i++){
      container.innerHTML += 
@@ -87,7 +87,7 @@ function blockAction(){
 function gameOver(){
     setTimeout(() => {  
         alert(`Você ganhou em ${playCount} jogadas!`);
-    }, delay/2);
+    }, delay);
 }
 
 function unreveal(card1, card2) {
