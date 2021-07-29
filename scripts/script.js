@@ -17,77 +17,71 @@ function askSize(){
         isCorrectLength = Boolean(length >= 4 && length <= 14);
     } 
 
-    cCards = length;
     gerarCartas(length);
 }
 
+
 function defineCards(length){
-    let half = length/2;
+    let halfCards = length/2;
+    parrots.sort(randomSorter);
 
-    for (i = 0; i < half; i++){
-
-        let parrotIndex = Math.floor(Math.random() * parrots.length);
-        let card = parrots[parrotIndex];
-
-        if (!cards.includes(card)) {
-            cards[i] = card;
-        } else {
-            i --;
-        }
+    for (i = 0; i < halfCards; i++){
+        cards.push(parrots[i]);
+        cards.push(parrots[i]);
     }
 
-    cards = doubleArray(cards);
-    cards.sort(comparador);
+    cards.sort(randomSorter);
 }
 
 
 function gerarCartas(length){
     cCards = length;
-
     defineCards(length);
-    let container = document.querySelector(".ctn-cards");
+    let ctnCards = document.querySelector(".ctn-cards");
+    ctnCards.innerHTML = "";
 
     for(i = 0; i < length; i++){
-     container.innerHTML += 
-     `<li class="card" onclick="reveal(this)">
-        <div class="front-face face">
-            <img src="images/front.png"/>
-        </div>
-        <div class="back-face face">
-            <img src="images/${cards[i]}.gif"/>
-        </div>
-     </li>`;
+        ctnCards.innerHTML += 
+        `<li class="card" onclick="reveal(this)">
+            <div class="front-face face">
+                <img src="images/front.png"/>
+            </div>
+            <div class="back-face face">
+                <img src="images/${cards[i]}.gif"/>
+            </div>
+        </li>`;
     }
 }
-
-
 
 function reveal(card){
     if (!block){
         cPlays++;
-
         let index = getChildIndex(card);
         let cardValue = cards[index];
-
         card.classList.add("active");
-   
-        if (lastCard !== undefined){
 
-            if (cardValue == match) {
-                card.setAttribute( "onClick", "");
-                match = "";
+        let isComparing = lastCard !== undefined;
+
+        if (isComparing){
+            let isRightAnswer = cardValue === match;
+
+            if (isRightAnswer) {
+                card.removeAttribute("onClick");
                 cFlippeds += 2;
                 if (cFlippeds == cCards) gameOver();
-            } else {
-                unreveal(card, lastCard);
+
+            } else if (!isRightAnswer) {
+                unreveal([card, lastCard]);
                 blockAction();
             }
 
+            match = "";
             lastCard = undefined;
-        }else{
+
+        } else if (!isComparing){
             lastCard = card;
             match = cardValue;
-            card.setAttribute( "onClick", "");
+            card.removeAttribute("onClick");
         }
     }
 
@@ -98,7 +92,6 @@ function blockAction(){
     setTimeout(() => {  
         block = false;
     }, delay);
-
 }
 
 function gameOver(){
@@ -107,50 +100,27 @@ function gameOver(){
     }, delay);
 }
 
-function unreveal(card1, card2) {
+function unreveal(arrCards) {
     setTimeout(() => {  
-    card1.classList.remove("active");
-    card2.classList.remove("active");
-    card1.setAttribute( "onClick", "reveal(this)");
-    card2.setAttribute( "onClick", "reveal(this)");
-    block = false;
-}, delay);
-
+        arrCards.forEach(card => {
+            card.classList.remove("active");
+            card.setAttribute( "onClick", "reveal(this)");
+        });
+        block = false;
+    }, delay);
 }
-/*
-function unreveal(card) {
-    card.classList.remove("active");
-}
-*/
 
 function getChildIndex(child){ 
-    let index = -1;
+    let index = 0;
     while( (child = child.previousSibling) != null ) index++;
 
     return index;
 }
 
-function doubleArray(array){
-    let length = array.length;
-
-    for (i = 0; i < length; i++){
-        array[length + i] = array[i];
-    }
-
-    return array;
-}
-
-function comparador(){
+function randomSorter(){
     return Math.random() - 0.5;
 }
 
-function getMaxScore(){
-
-}
-
-
-
-
-askSize();
-//gerarCartas(6);
+//askSize();
+gerarCartas(14);
 
