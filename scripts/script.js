@@ -22,7 +22,7 @@ function askSize(){
 
 
 function defineCards(length){
-    let halfCards = length/2;
+    const halfCards = length/2;
     parrots.sort(randomSorter);
 
     for (i = 0; i < halfCards; i++){
@@ -37,7 +37,7 @@ function defineCards(length){
 function gerarCartas(length){
     cCards = length;
     defineCards(length);
-    let ctnCards = document.querySelector(".ctn-cards");
+    const ctnCards = document.querySelector(".ctn-cards");
     ctnCards.innerHTML = "";
 
     for(i = 0; i < length; i++){
@@ -56,14 +56,14 @@ function gerarCartas(length){
 function reveal(card){
     if (!block){
         cPlays++;
-        let index = getChildIndex(card);
-        let cardValue = cards[index];
+        const index = getChildIndex(card);
+        const cardValue = cards[index];
         card.classList.add("active");
 
-        let isComparing = lastCard !== undefined;
+        const isComparing = lastCard !== undefined;
 
         if (isComparing){
-            let isRightAnswer = cardValue === match;
+            const isRightAnswer = cardValue === match;
 
             if (isRightAnswer) {
                 card.removeAttribute("onClick");
@@ -95,9 +95,7 @@ function blockAction(){
 }
 
 function gameOver(){
-    setTimeout(() => {  
-        alert(`Você ganhou em ${cPlays} jogadas!`);
-    }, delay);
+    setTimeout(alert, delay, `Você ganhou em ${cPlays} jogadas!`);
 }
 
 function unreveal(arrCards) {
@@ -122,5 +120,5 @@ function randomSorter(){
 }
 
 //askSize();
-gerarCartas(14);
+gerarCartas(8);
 
