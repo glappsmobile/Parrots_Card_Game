@@ -5,6 +5,10 @@ let block = false;
 let cFlippeds = 0;
 let cPlays = 0;
 let cCards = 0;
+let elapsedSeconds = 0;
+
+const intervals = [];
+
 
 function askSize(){
     let isPair = false;
@@ -119,6 +123,22 @@ function randomSorter(){
     return Math.random() - 0.5;
 }
 
-//askSize();
-gerarCartas(8);
+function secondsToMinSec(s){return(s-(s%=60))/60+(9<s?':':':0')+s}
+
+
+function timer(){
+    let tvTimer = document.querySelector(".ctn-status .timer");
+    tvTimer.innerHTML = elapsedSeconds;
+
+    let intervalTimer = setInterval( () => {
+        elapsedSeconds++;
+        tvTimer.innerHTML = secondsToMinSec(elapsedSeconds);
+
+    }, 1000);
+
+    intervals.push({id: intervalTimer, name: "timer"});
+}
+
+askSize();
+//gerarCartas(8);
 

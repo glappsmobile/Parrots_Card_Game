@@ -12,6 +12,19 @@ main {
     align-items: center;
 }
 
+.ctn-status {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 10px;
+    color: #75B79E;
+    font-weight: bold;
+    font-size: 20px;
+}
+
 h1 {
     font-size: 56px;
     color: #75B79E;
@@ -88,6 +101,7 @@ strong {
     -o-user-select: none;
 }
 
+/*MAKING IMAGES UNDRAGGABLE*/
 img {
     pointer-events: none;
 }
