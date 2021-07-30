@@ -6,6 +6,8 @@ let cFlippeds = 0;
 let cPlays = 0;
 let cCards = 0;
 let elapsedSeconds = 0;
+let lastTime = 0;
+let score = 0;
 
 const intervals = [];
 
@@ -70,6 +72,7 @@ function reveal(card){
             const isRightAnswer = cardValue === match;
 
             if (isRightAnswer) {
+                scoreGenerator();
                 card.removeAttribute("onClick");
                 cFlippeds += 2;
                 if (cFlippeds == cCards) gameOver();
@@ -139,6 +142,59 @@ function timer(){
     intervals.push({id: intervalTimer, name: "timer"});
 }
 
-askSize();
-//gerarCartas(8);
+
+function getMultiplier(multiplier){
+    switch(multiplier){
+        case MULTIPLIER_ODDS:
+            let remainingCards = cCards - cFlippeds - 1;
+            let odds = (1 / remainingCards);
+            let multiplierOdds = ((1 - odds) + 1/odds);
+            return multiplierOdds;
+
+        case MULTIPLIER_TIME:
+            let time = elapsedSeconds - lastTime;
+            if (time > 20) time = 20;
+            let multiplierTime = time/20;
+            if (multiplierTime < 1) multiplierTime = (multiplierTime-2)*(-1);
+            lastTime = elapsedSeconds;
+            return multiplierTime;
+
+        case MULTIPLIER_PLAYS:
+            let seen =  (cPlays-cFlippeds-2)/2;
+            let multiplierPlays = 10 - ((seen/2) * (20/cCards));
+            return multiplierPlays;
+
+        default:
+            console.error("Invalid multiplier: "+multiplier);
+            return 1;
+    }
+}
+
+
+function scoreGenerator(){
+    let tvScore = document.querySelector(".ctn-status .score");
+    let generatedScore = 100;
+    let multiplierOdds = getMultiplier(MULTIPLIER_ODDS);
+    let multiplierTime = getMultiplier(MULTIPLIER_TIME);
+    let multiplierPlays = getMultiplier(MULTIPLIER_PLAYS);
+
+    generatedScore = (multiplierTime * multiplierPlays * generatedScore) + (generatedScore * multiplierOdds);
+
+    score += Number.parseInt(generatedScore);
+
+    tvScore.innerHTML = `SCORE: ${score}`;
+    
+    console.log(`multiplierOdds = ${multiplierOdds}`);
+    console.log(`multiplierTime = ${multiplierTime}`);
+    console.log(`multiplierPlays = ${multiplierPlays}`);
+}
+
+
+function startGame(){
+    timer();
+    //askSize();
+    gerarCartas(10);
+}
+
+startGame();
 
