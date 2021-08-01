@@ -10,6 +10,7 @@ main {
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-bottom: 60px;
 }
 
 .ctn-status {
@@ -97,13 +98,6 @@ strong {
     font-weight: bold;
 }
 
-.unselectable {
-    user-select: none;
-    -moz-user-select: none;
-    -khtml-user-select: none;
-    -webkit-user-select: none;
-    -o-user-select: none;
-}
 
 .ctn-ranking {
     width: 95%;
@@ -127,6 +121,15 @@ strong {
     font-size: 22px;
 }
 
+.input-rank {
+    width: 70%;
+    text-align: center;
+}
+
+.input-rank:focus {
+    outline: none;
+}
+
 .overlay {
     background-color: rgba(0, 0, 0, 0.95);
     position: fixed;
@@ -140,13 +143,13 @@ strong {
 .btn {
     border: none;
     border-radius: 50px;
-    width: 50%;
+    color: #77AA77;
+    font-weight: bolder;
     height: 50px;
     margin-bottom: 20px;
     margin-top: 20px;
-    color: #77AA77;
     font-size: 24px;
-    font-weight: bolder;
+    width: 50%;
 }
 
 
@@ -157,6 +160,10 @@ strong {
 
 .ctn-ranking ul {
     width: 95%;
+}
+
+.ctn-ranking .labels {
+    margin: 10px 0;
 }
 
 .ctn-ranking .scores {
@@ -181,7 +188,6 @@ strong {
     display: flex;
     justify-content: center;
     margin-bottom: 10px;
-    opacity: 100;
 }
 
 .ctn-ranking ul .txt-ranking .span-rank{
@@ -197,11 +203,46 @@ strong {
     z-index: -1;
 }
 
+.ctn-menu {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #77aa77;
+    height: 60px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    box-shadow: 1px -1px 1px rgba(0,0,0,.3);
+    z-index: 1;
+}
 
+.opt-menu {
+    font-size: 48px;
+    color: #EEF9BF;
+}
 
+ion-icon {
+    pointer-events: none;
+}
 
 /*MAKING IMAGES UNDRAGGABLE*/
 img {
     pointer-events: none;
 }
 
+.unselectable {
+    user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+}
+
+button {
+    user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+}

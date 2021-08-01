@@ -9,7 +9,7 @@ let elapsedSeconds = 0;
 let lastTime = 0;
 let score = 0;
 
-const intervals = [];
+let intervals = [];
 
 
 function askSize(){
@@ -64,7 +64,10 @@ function reveal(card){
         cPlays++;
         const index = card.id;
         const cardValue = cards[index];
+        const gif = card.querySelector(".back-face img");
+
         card.classList.add("active");
+        gif.setAttribute("src", gif.src);
 
         const isComparing = lastCard !== undefined;
 
@@ -94,12 +97,6 @@ function reveal(card){
 
 }
 
-function gameOver(){
-    setTimeout(alert, ONE_SECOND, `Você ganhou em ${cPlays} jogadas!`);
-    highScores.push({name: "USER", score, time: elapsedSeconds});
-    showRanking();
-    stopTimer();
-}
 
 function unreveal(arrCards) {
     setTimeout(() => {  
@@ -193,7 +190,7 @@ function scoreGenerator(){
 function generateFakeRankingData(){
     randomNames.sort(sorterRandom);
 
-    for (let i = 0; i < 20; i++){
+    for (let i = 0; i < 18; i++){
         const randomScore = Math.floor(Math.random() * 9000 + 1001);
         const randomTime = Math.floor(Math.random() * 60 + randomScore/100 );
 
@@ -201,6 +198,7 @@ function generateFakeRankingData(){
         highScores[i].name = randomNames[i];
         highScores[i].score = randomScore;
         highScores[i].time = randomTime;
+        highScores[i].id = i;
     }
 
 }
@@ -213,11 +211,13 @@ function hideRanking(){
     }, DELAY_OVERLAY);
 }
 
-function showRanking() {
+function showRanking(isInputNeeded) {
     const ctnRanking = document.querySelector(".ctn-ranking");
     const listLabels = ctnRanking.querySelector(".content-ranking ul.labels");
     const listRanking = ctnRanking.querySelector(".content-ranking ul.scores");
     highScores.sort(sortObjectByScore);
+
+    listRanking.innerHTML = "";
 
     listLabels.innerHTML =  
     `<li class = "txt-ranking">
@@ -228,27 +228,100 @@ function showRanking() {
     </li>`
 
     highScores.forEach((highScore, index) => {
-        listRanking.innerHTML += 
-        `<li id="${index}"class="txt-ranking">
-        <span class="span-rank">${index+1}</span>
-        <span>${highScore.name}</span>
-        <span>${highScore.score}</span>
-        <span>${secondsToMinSec(highScore.time)}</span>
-        </li>`
+        const isLastAdded = highScore.id === undefined;
+        const isInputIndex = isLastAdded && isInputNeeded;
+
+        if (isLastAdded) {
+            highScores[index].id = index;
+        }
+
+        if (!isInputIndex){
+            listRanking.innerHTML += 
+            `<li id="rank-row-${index}"class="txt-ranking">
+            <span class="span-rank">${index+1}</span>
+            <span>${highScore.name}</span>
+            <span>${highScore.score}</span>
+            <span>${secondsToMinSec(highScore.time)}</span>
+            </li>`;
+
+        } else {
+            listRanking.innerHTML += 
+            `<li id="rank-row-${index}"class="txt-ranking">
+            <span class="span-rank">${index+1}</span>
+            <span>
+            <input class="input-rank" type="text" maxlength=12 autofocus/>
+            <button>OK</button>
+            </span>
+            <span>${highScore.score}</span>
+            <span>${secondsToMinSec(highScore.time)}</span>
+            </li>`;
+
+            if (i > 16) listRanking.scrollTo(0, 200);
+
+            setTimeout(() => {
+            const input = listRanking.querySelector(`li#rank-row-${index} input`);
+            const btn = listRanking.querySelector(`li#rank-row-${index} button`);
+            btn.setAttribute("onClick", `setScoreName(${index})`);
+
+            input.addEventListener("keyup", function(event) {
+                // WHEN "ENTER" KEY RELEASED, DO: 
+                if (event.keyCode === 13) {
+                  event.preventDefault();
+                  setScoreName(index);
+                }
+            });
+          }, ONE_SECOND);
+
+        }
     });
 
     ctnRanking.classList.remove("behind");
     ctnRanking.classList.remove("invisible");
 }
 
+function setScoreName(index){
+    const input = document.querySelector(`.content-ranking ul.scores li#rank-row-${index} input`);
+    const name = input.value;
+    highScores[index].name = name;
+    showRanking(false);
+}
+
+function cleanGame(){
+    if (intervals.length > 0) stopTimer();
+    elapsedSeconds = 0;
+    score = 0;
+    cards = [];
+    match = "";
+    lastCard = undefined;
+    isBlocked = false;
+    cFlippeds = 0;
+    cPlays = 0;
+    cCards = 0;
+    lastTime = 0;
+    intervals = [];
+
+    const tvScore = document.querySelector(".ctn-status .score");
+    tvScore.innerHTML = "SCORE: 0"
+
+}
+
+function gameOver(){
+    stopTimer();
+    setTimeout(() => {
+        alert(`Você ganhou em ${cPlays} jogadas!`);
+        highScores.push({name: "VOCÊ", score, time: elapsedSeconds});
+        showRanking(true);
+    }, ONE_SECOND);
+}
 
 function startGame(){
+    cleanGame();
     timer();
     //askSize();
-    gerarCartas(4);
-    generateFakeRankingData();
-    showRanking();
+    gerarCartas(14);
 }
+
+generateFakeRankingData();
 
 startGame();
 

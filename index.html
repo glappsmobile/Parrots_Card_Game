@@ -8,31 +8,41 @@
         <link rel="icon" type="image/png" href="https://www.google.com/s2/u/0/favicons?domain=instagram.com">
 
         <title> PARROT CARD GAME </title>
-        </head>
+    </head>
     <body>
-        <main>
-            <header class="ctn-status">
-                <span class="score">SCORE: 0</span>
-                <span class="timer">0:00</span>
-            </header>
 
+        <header class="ctn-status">
+            <span class="score">SCORE: 0</span>
+            <span class="timer">0:00</span>
+        </header>
+
+        <main>
             <h1><strong>PARROT CARD GAME</strong></h1> 
 
             <ul class="ctn-cards unselectable">
             </ul>
         </main>
 
-        <section class="ctn-ranking invisible">
-        <div class="overlay" onclick="hideRanking()"></div>
-        <div class="content-ranking">
-            <span>RANKING</span>
-            <ul class="labels"></ul>
-            <ul class="scores"></ul>
-            <button class="btn" onclick="hideRanking()">FECHAR</button>
-        </div>
+        <section class="ctn-ranking invisible behind">
+            <div class="overlay" onclick="hideRanking()"></div>
+            <div class="content-ranking">
+                <span>RANKING</span>
+                <ul class="labels"></ul>
+                <ul class="scores"></ul>
+                <button class="btn" onclick="hideRanking()">FECHAR</button>
+            </div>
         </section>
 
+        <header class="ctn-menu">
+            <ion-button title="Reiniciar" onclick="startGame()">
+                <ion-icon class="opt-menu" name="refresh-outline"></ion-icon>
+            </ion-button>
+            <ion-button title="Ranking" onclick="showRanking(false)">
+                <ion-icon class="opt-menu" name="globe-outline"></ion-icon>
+            </ion-button>
+        </header>
 
+        <script type="module" src="https://unpkg.com/ionicons@5.4.0/dist/ionicons/ionicons.esm.js"></script>
         <script src="scripts/consts.js"></script>
         <script src="scripts/script.js"></script>
     </body>
