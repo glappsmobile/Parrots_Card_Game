@@ -167,125 +167,6 @@ function getMultiplier(multiplier){
 }
 
 
-function scoreGenerator(){
-    let tvScore = document.querySelector(".ctn-status .score");
-    let generatedScore = 100;
-    let multiplierOdds = getMultiplier(MULTIPLIER_ODDS);
-    let multiplierTime = getMultiplier(MULTIPLIER_TIME);
-    let multiplierPlays = getMultiplier(MULTIPLIER_PLAYS);
-
-    generatedScore = (multiplierPlays + multiplierTime + multiplierOdds ) * generatedScore;
-
-    score += Number.parseInt(generatedScore);
-
-    tvScore.innerHTML = `SCORE: ${score}`;
-
-    console.log(`multiplierOdds = ${multiplierOdds}`);
-    console.log(`multiplierTime = ${multiplierTime}`);
-    console.log(`multiplierPlays = ${multiplierPlays}`);
-    console.log(`generatedScore = ${generatedScore}`);
-
-}
-
-function generateFakeRankingData(){
-    randomNames.sort(sorterRandom);
-
-    for (let i = 0; i < 18; i++){
-        const randomScore = Math.floor(Math.random() * 9000 + 1001);
-        const randomTime = Math.floor(Math.random() * 60 + randomScore/100 );
-
-        highScores.push({});
-        highScores[i].name = randomNames[i];
-        highScores[i].score = randomScore;
-        highScores[i].time = randomTime;
-        highScores[i].id = i;
-    }
-
-}
-
-function hideRanking(){
-    const ctnRanking = document.querySelector(".ctn-ranking");
-    ctnRanking.classList.add("invisible");
-    setTimeout(() => {
-        ctnRanking.classList.add("behind");
-    }, DELAY_OVERLAY);
-}
-
-function showRanking(isInputNeeded) {
-    const ctnRanking = document.querySelector(".ctn-ranking");
-    const listLabels = ctnRanking.querySelector(".content-ranking ul.labels");
-    const listRanking = ctnRanking.querySelector(".content-ranking ul.scores");
-    highScores.sort(sortObjectByScore);
-
-    listRanking.innerHTML = "";
-
-    listLabels.innerHTML =  
-    `<li class = "txt-ranking">
-    <span id="rank"><strong>${highScoreReference.rank}</strong></span>
-    <span id="name"><strong>${highScoreReference.name}</strong></span>
-    <span id="score"><strong>${highScoreReference.score}</strong></span>
-    <span id="time"><strong>${highScoreReference.time}</strong></span>
-    </li>`
-
-    highScores.forEach((highScore, index) => {
-        const isLastAdded = highScore.id === undefined;
-        const isInputIndex = isLastAdded && isInputNeeded;
-
-        if (isLastAdded) {
-            highScores[index].id = index;
-        }
-
-        if (!isInputIndex){
-            listRanking.innerHTML += 
-            `<li id="rank-row-${index}"class="txt-ranking">
-            <span id="rank">${index+1}</span>
-            <span id="name">${highScore.name}</span>
-            <span id="score">${highScore.score}</span>
-            <span id="time">${secondsToMinSec(highScore.time)}</span>
-            </li>`;
-
-        } else {
-            listRanking.innerHTML += 
-            `<li id="rank-row-${index}"class="txt-ranking">
-            <span id="rank">${index+1}</span>
-            <span id"name">
-            <input class="input-rank" type="text" maxlength=12 autofocus/>
-            <button>OK</button>
-            </span>
-            <span id="score">${highScore.score}</span>
-            <span id="time">${secondsToMinSec(highScore.time)}</span>
-            </li>`;
-
-            if (i > 16) listRanking.scrollTo(0, 200);
-
-            setTimeout(() => {
-            const input = listRanking.querySelector(`li#rank-row-${index} input`);
-            const btn = listRanking.querySelector(`li#rank-row-${index} button`);
-            btn.setAttribute("onClick", `setScoreName(${index})`);
-
-            input.addEventListener("keyup", function(event) {
-                // WHEN "ENTER" KEY RELEASED, DO: 
-                if (event.keyCode === 13) {
-                  event.preventDefault();
-                  setScoreName(index);
-                }
-            });
-          }, ONE_SECOND);
-
-        }
-    });
-
-    ctnRanking.classList.remove("behind");
-    ctnRanking.classList.remove("invisible");
-}
-
-function setScoreName(index){
-    const input = document.querySelector(`.content-ranking ul.scores li#rank-row-${index} input`);
-    const name = input.value;
-    highScores[index].name = name;
-    showRanking(false);
-}
-
 function cleanGame(){
     if (intervals.length > 0) stopTimer();
     elapsedSeconds = 0;
@@ -305,11 +186,25 @@ function cleanGame(){
 
 }
 
+function scoreGenerator(){
+    let tvScore = document.querySelector(".ctn-status .score");
+    let generatedScore = 100;
+    let multiplierOdds = getMultiplier(MULTIPLIER_ODDS);
+    let multiplierTime = getMultiplier(MULTIPLIER_TIME);
+    let multiplierPlays = getMultiplier(MULTIPLIER_PLAYS);
+
+    generatedScore = (multiplierPlays + multiplierTime + multiplierOdds ) * generatedScore;
+
+    score += Number.parseInt(generatedScore);
+
+    tvScore.innerHTML = `SCORE: ${score}`;
+}
+
 function gameOver(){
     stopTimer();
     setTimeout(() => {
         alert(`Você ganhou em ${cPlays} jogadas!`);
-        highScores.push({name: "VOCÊ", score, time: elapsedSeconds});
+        highScores.push({name: "Você", score, time: elapsedSeconds});
         showRanking(true);
     }, ONE_SECOND);
 }
@@ -317,8 +212,10 @@ function gameOver(){
 function startGame(){
     cleanGame();
     timer();
-    askSize();
-   // gerarCartas(14);
+   // askSize();
+    gerarCartas(2);
+
+  //showRanking(true);
 }
 
 generateFakeRankingData();

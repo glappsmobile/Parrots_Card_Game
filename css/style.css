@@ -104,17 +104,23 @@ strong {
 
 
 .ctn-ranking {
-    width: 95%;
-    height: 80%;
+    width: 100%;
+    height: 100%;
     max-width: 600px;
-    top: 100px;
+    top: 0;
     position: fixed;
     z-index: 2;
     transition: opacity 200ms;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .content-ranking{
+    width: 95%;
+    height: 80%;
     position: sticky;
+    top: 0;
     background-color: #77aa77;
     display: flex;
     flex-direction: column;
@@ -130,7 +136,7 @@ strong {
     text-align: center;
 }
 
-.input-rank:focus {
+button, .input-rank:focus {
     outline: none;
 }
 
@@ -166,10 +172,8 @@ strong {
     width: 95%;
 }
 
-
-
 .ctn-ranking .scores {
-    max-height: 500px;
+    max-height: 80%;
     overflow-y: scroll;
     background-color: #77AA77;
 
@@ -197,7 +201,7 @@ strong {
 }
 
 .ctn-ranking ul .txt-ranking #rank{
-    width: 10%;
+    width: 15%;
 }
 
 
@@ -252,4 +256,17 @@ button {
     -webkit-user-select: none;
     -o-user-select: none;
 }
+
+
+@media (max-width: 614px) {
+
+    .ctn-ranking ul span#time {
+        display: none;
+    }
+
+    .ctn-ranking ul span {
+        width: 33%;
+    }
+}
+
 
