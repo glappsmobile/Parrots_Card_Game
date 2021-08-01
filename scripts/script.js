@@ -221,10 +221,10 @@ function showRanking(isInputNeeded) {
 
     listLabels.innerHTML =  
     `<li class = "txt-ranking">
-    <span class="span-rank"></span>
-    <span><strong>${highScoreReference.name}</strong></span>
-    <span><strong>${highScoreReference.score}</strong></span>
-    <span><strong>${highScoreReference.time}</strong></span>
+    <span id="rank"><strong>${highScoreReference.rank}</strong></span>
+    <span id="name"><strong>${highScoreReference.name}</strong></span>
+    <span id="score"><strong>${highScoreReference.score}</strong></span>
+    <span id="time"><strong>${highScoreReference.time}</strong></span>
     </li>`
 
     highScores.forEach((highScore, index) => {
@@ -238,22 +238,22 @@ function showRanking(isInputNeeded) {
         if (!isInputIndex){
             listRanking.innerHTML += 
             `<li id="rank-row-${index}"class="txt-ranking">
-            <span class="span-rank">${index+1}</span>
-            <span>${highScore.name}</span>
-            <span>${highScore.score}</span>
-            <span>${secondsToMinSec(highScore.time)}</span>
+            <span id="rank">${index+1}</span>
+            <span id="name">${highScore.name}</span>
+            <span id="score">${highScore.score}</span>
+            <span id="time">${secondsToMinSec(highScore.time)}</span>
             </li>`;
 
         } else {
             listRanking.innerHTML += 
             `<li id="rank-row-${index}"class="txt-ranking">
-            <span class="span-rank">${index+1}</span>
-            <span>
+            <span id="rank">${index+1}</span>
+            <span id"name">
             <input class="input-rank" type="text" maxlength=12 autofocus/>
             <button>OK</button>
             </span>
-            <span>${highScore.score}</span>
-            <span>${secondsToMinSec(highScore.time)}</span>
+            <span id="score">${highScore.score}</span>
+            <span id="time">${secondsToMinSec(highScore.time)}</span>
             </li>`;
 
             if (i > 16) listRanking.scrollTo(0, 200);
@@ -317,8 +317,8 @@ function gameOver(){
 function startGame(){
     cleanGame();
     timer();
-    //askSize();
-    gerarCartas(14);
+    askSize();
+   // gerarCartas(14);
 }
 
 generateFakeRankingData();
