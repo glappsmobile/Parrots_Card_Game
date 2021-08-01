@@ -28,15 +28,15 @@ function showRanking(isInputNeeded) {
     const listRanking = ctnRanking.querySelector(".content-ranking ul.scores");
     highScores.sort(sortObjectByScore);
 
-    listRanking.innerHTML = "";
-
     listLabels.innerHTML =  
     `<li class = "txt-ranking">
     <span id="rank"><strong>${highScoreReference.rank}</strong></span>
     <span id="name"><strong>${highScoreReference.name}</strong></span>
     <span id="score"><strong>${highScoreReference.score}</strong></span>
     <span id="time"><strong>${highScoreReference.time}</strong></span>
-    </li>`
+    </li>`;
+
+    listRanking.innerHTML = "";
 
     highScores.forEach((highScore, index) => {
         const isLastAdded = highScore.id === undefined;
@@ -67,7 +67,7 @@ function showRanking(isInputNeeded) {
             <span id="time">${secondsToMinSec(highScore.time)}</span>
             </li>`;
 
-            if (index > 16) listRanking.scrollTo(0, 200);
+            if (index > 16) listRanking.scrollTo(0, i*30);
 
             setTimeout(() => {
             const input = listRanking.querySelector(`li#rank-row-${index} input`);
