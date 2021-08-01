@@ -212,10 +212,7 @@ function gameOver(){
 function startGame(){
     cleanGame();
     timer();
-   // askSize();
-    gerarCartas(2);
-
-  //showRanking(true);
+    askSize();
 }
 
 generateFakeRankingData();
