@@ -7,21 +7,31 @@
         <link rel="stylesheet" href="css/style.css" />
         <link rel="icon" type="image/png" href="https://www.google.com/s2/u/0/favicons?domain=instagram.com">
 
-
         <title> PARROT CARD GAME </title>
         </head>
     <body>
         <main>
-            <div class="ctn-status">
+            <header class="ctn-status">
                 <span class="score">SCORE: 0</span>
                 <span class="timer">0:00</span>
-            </div>
+            </header>
 
-            <h1><strong>PARROT CARD GAME</strong></h1>
+            <h1><strong>PARROT CARD GAME</strong></h1> 
 
             <ul class="ctn-cards unselectable">
             </ul>
         </main>
+
+        <section class="ctn-ranking invisible">
+        <div class="overlay" onclick="hideRanking()"></div>
+        <div class="content-ranking">
+            <span>RANKING</span>
+            <ul class="labels"></ul>
+            <ul class="scores"></ul>
+            <button class="btn" onclick="hideRanking()">FECHAR</button>
+        </div>
+        </section>
+
 
         <script src="scripts/consts.js"></script>
         <script src="scripts/script.js"></script>

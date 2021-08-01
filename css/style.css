@@ -21,11 +21,12 @@ main {
     justify-content: space-between;
     height: 20px;
     padding: 5px 10px;
-    background-color: #EEF9BF;
+    background-color: #77aa77;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    color: #75B79E;
+    color:#EEF9BF;
     font-weight: bold;
     font-size: 20px;
+    z-index: 1;
 }
 
 h1 {
@@ -48,8 +49,8 @@ h1 {
     justify-content: center;
     align-items: center;
     position: relative;
-    width: 14vw;
-    height: 15vw;
+    width: 12vw;
+    height: 13vw;
     min-width: 117px;
     min-height: 125px;
     border-radius: 4px;
@@ -103,6 +104,101 @@ strong {
     -webkit-user-select: none;
     -o-user-select: none;
 }
+
+.ctn-ranking {
+    width: 95%;
+    height: 80%;
+    max-width: 600px;
+    top: 100px;
+    position: fixed;
+    z-index: 2;
+    transition: opacity 200ms;
+}
+
+.content-ranking{
+    position: sticky;
+    background-color: #77aa77;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+    border-radius: 10px;
+    color: #EEF9BF;
+    font-size: 22px;
+}
+
+.overlay {
+    background-color: rgba(0, 0, 0, 0.95);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    opacity: 100;
+}
+
+.btn {
+    border: none;
+    border-radius: 50px;
+    width: 50%;
+    height: 50px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    color: #77AA77;
+    font-size: 24px;
+    font-weight: bolder;
+}
+
+
+.content-ranking > span:first-child {
+    font-size: 40px;
+    font-weight: bold;
+}
+
+.ctn-ranking ul {
+    width: 95%;
+}
+
+.ctn-ranking .scores {
+    max-height: 500px;
+    overflow-y: scroll;
+    background-color: #77AA77;
+
+}
+
+.ctn-ranking ul .txt-ranking {
+    display: flex;
+    justify-content: space-between;
+}
+
+.ctn-ranking ul .l{
+    margin: 15px 0;
+    font-size: 26px;
+}
+
+.ctn-ranking ul .txt-ranking span {
+    width: 30%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+    opacity: 100;
+}
+
+.ctn-ranking ul .txt-ranking .span-rank{
+    width: 10%;
+}
+
+
+.invisible {
+    opacity: 0;
+}
+
+.behind {
+    z-index: -1;
+}
+
+
+
 
 /*MAKING IMAGES UNDRAGGABLE*/
 img {

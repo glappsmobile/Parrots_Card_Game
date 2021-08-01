@@ -1,7 +1,7 @@
 let cards = [];
 let match = "";
 let lastCard = undefined;
-let block = false;
+let isBlocked = false;
 let cFlippeds = 0;
 let cPlays = 0;
 let cCards = 0;
@@ -29,14 +29,14 @@ function askSize(){
 
 function defineCards(length){
     const halfCards = length/2;
-    parrots.sort(randomSorter);
+    parrots.sort(sorterRandom);
 
     for (i = 0; i < halfCards; i++){
         cards.push(parrots[i]);
         cards.push(parrots[i]);
     }
 
-    cards.sort(randomSorter);
+    cards.sort(sorterRandom);
 }
 
 
@@ -48,7 +48,7 @@ function gerarCartas(length){
 
     for(i = 0; i < length; i++){
         ctnCards.innerHTML += 
-        `<li class="card" onclick="reveal(this)">
+        `<li class="card"  id="${i}" onclick="reveal(this)">
             <div class="front-face face">
                 <img src="images/front.png"/>
             </div>
@@ -60,9 +60,9 @@ function gerarCartas(length){
 }
 
 function reveal(card){
-    if (!block){
+    if (!isBlocked){
         cPlays++;
-        const index = getChildIndex(card);
+        const index = card.id;
         const cardValue = cards[index];
         card.classList.add("active");
 
@@ -78,8 +78,8 @@ function reveal(card){
                 if (cFlippeds == cCards) gameOver();
 
             } else if (!isRightAnswer) {
+                isBlocked = true;
                 unreveal([card, lastCard]);
-                blockAction();
             }
 
             match = "";
@@ -94,15 +94,11 @@ function reveal(card){
 
 }
 
-function blockAction(){
-    block = true;
-    setTimeout(() => {  
-        block = false;
-    }, delay);
-}
-
 function gameOver(){
-    setTimeout(alert, delay, `Você ganhou em ${cPlays} jogadas!`);
+    setTimeout(alert, ONE_SECOND, `Você ganhou em ${cPlays} jogadas!`);
+    highScores.push({name: "USER", score, time: elapsedSeconds});
+    showRanking();
+    stopTimer();
 }
 
 function unreveal(arrCards) {
@@ -111,19 +107,18 @@ function unreveal(arrCards) {
             card.classList.remove("active");
             card.setAttribute( "onClick", "reveal(this)");
         });
-        block = false;
-    }, delay);
+        isBlocked = false;
+    }, ONE_SECOND);
 }
 
-function getChildIndex(child){ 
-    let index = 0;
-    while( (child = child.previousSibling) != null ) index++;
 
-    return index;
-}
 
-function randomSorter(){
+function sorterRandom(){
     return Math.random() - 0.5;
+}
+
+function sortObjectByScore(a, b){
+    return parseFloat(b.score) -  parseFloat(a.score);
 }
 
 function secondsToMinSec(s){return(s-(s%=60))/60+(9<s?':':':0')+s}
@@ -131,37 +126,41 @@ function secondsToMinSec(s){return(s-(s%=60))/60+(9<s?':':':0')+s}
 
 function timer(){
     let tvTimer = document.querySelector(".ctn-status .timer");
-    tvTimer.innerHTML = elapsedSeconds;
+    tvTimer.innerHTML = secondsToMinSec(elapsedSeconds);
 
     let intervalTimer = setInterval( () => {
         elapsedSeconds++;
         tvTimer.innerHTML = secondsToMinSec(elapsedSeconds);
 
-    }, 1000);
+    }, ONE_SECOND);
 
     intervals.push({id: intervalTimer, name: "timer"});
 }
 
+function stopTimer(){
+    clearInterval(intervals[0].id);
+}
 
 function getMultiplier(multiplier){
     switch(multiplier){
         case MULTIPLIER_ODDS:
             let remainingCards = cCards - cFlippeds - 1;
             let odds = (1 / remainingCards);
-            let multiplierOdds = ((1 - odds) + 1/odds);
+            let multiplierOdds = ((1 - odds) + (1/odds)/ODDS_WEIGHT);
             return multiplierOdds;
 
         case MULTIPLIER_TIME:
             let time = elapsedSeconds - lastTime;
-            if (time > 20) time = 20;
-            let multiplierTime = time/20;
+            if (time > SCORE_MAX_TIME) time = SCORE_MAX_TIME;
+            let multiplierTime = time/SCORE_MAX_TIME;
             if (multiplierTime < 1) multiplierTime = (multiplierTime-2)*(-1);
             lastTime = elapsedSeconds;
             return multiplierTime;
 
         case MULTIPLIER_PLAYS:
             let seen =  (cPlays-cFlippeds-2)/2;
-            let multiplierPlays = 10 - ((seen/2) * (20/cCards));
+            let multiplierPlays = 10 - ((seen/2) * (SCORE_SEEN_DIFFICULTY/cCards));
+            if (multiplierPlays < 1) multiplierPlays = 1;
             return multiplierPlays;
 
         default:
@@ -178,22 +177,77 @@ function scoreGenerator(){
     let multiplierTime = getMultiplier(MULTIPLIER_TIME);
     let multiplierPlays = getMultiplier(MULTIPLIER_PLAYS);
 
-    generatedScore = (multiplierTime * multiplierPlays * generatedScore) + (generatedScore * multiplierOdds);
+    generatedScore = (multiplierPlays + multiplierTime + multiplierOdds ) * generatedScore;
 
     score += Number.parseInt(generatedScore);
 
     tvScore.innerHTML = `SCORE: ${score}`;
-    
+
     console.log(`multiplierOdds = ${multiplierOdds}`);
     console.log(`multiplierTime = ${multiplierTime}`);
     console.log(`multiplierPlays = ${multiplierPlays}`);
+    console.log(`generatedScore = ${generatedScore}`);
+
+}
+
+function generateFakeRankingData(){
+    randomNames.sort(sorterRandom);
+
+    for (let i = 0; i < 20; i++){
+        const randomScore = Math.floor(Math.random() * 9000 + 1001);
+        const randomTime = Math.floor(Math.random() * 60 + randomScore/100 );
+
+        highScores.push({});
+        highScores[i].name = randomNames[i];
+        highScores[i].score = randomScore;
+        highScores[i].time = randomTime;
+    }
+
+}
+
+function hideRanking(){
+    const ctnRanking = document.querySelector(".ctn-ranking");
+    ctnRanking.classList.add("invisible");
+    setTimeout(() => {
+        ctnRanking.classList.add("behind");
+    }, DELAY_OVERLAY);
+}
+
+function showRanking() {
+    const ctnRanking = document.querySelector(".ctn-ranking");
+    const listLabels = ctnRanking.querySelector(".content-ranking ul.labels");
+    const listRanking = ctnRanking.querySelector(".content-ranking ul.scores");
+    highScores.sort(sortObjectByScore);
+
+    listLabels.innerHTML =  
+    `<li class = "txt-ranking">
+    <span class="span-rank"></span>
+    <span><strong>${highScoreReference.name}</strong></span>
+    <span><strong>${highScoreReference.score}</strong></span>
+    <span><strong>${highScoreReference.time}</strong></span>
+    </li>`
+
+    highScores.forEach((highScore, index) => {
+        listRanking.innerHTML += 
+        `<li id="${index}"class="txt-ranking">
+        <span class="span-rank">${index+1}</span>
+        <span>${highScore.name}</span>
+        <span>${highScore.score}</span>
+        <span>${secondsToMinSec(highScore.time)}</span>
+        </li>`
+    });
+
+    ctnRanking.classList.remove("behind");
+    ctnRanking.classList.remove("invisible");
 }
 
 
 function startGame(){
     timer();
     //askSize();
-    gerarCartas(10);
+    gerarCartas(4);
+    generateFakeRankingData();
+    showRanking();
 }
 
 startGame();
