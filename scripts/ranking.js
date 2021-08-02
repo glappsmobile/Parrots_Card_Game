@@ -1,5 +1,5 @@
 function generateFakeRankingData(){
-    randomNames.sort(sorterRandom);
+    randomNames.sort(sorter.random());
 
     for (let i = 0; i < 18; i++){
         const randomScore = Math.floor(Math.random() * 9000 + 1001);
@@ -26,7 +26,7 @@ function showRanking(isInputNeeded) {
     const ctnRanking = document.querySelector(".ctn-ranking");
     const listLabels = ctnRanking.querySelector(".content-ranking ul.labels");
     const listRanking = ctnRanking.querySelector(".content-ranking ul.scores");
-    highScores.sort(sortObjectByScore);
+    highScores.sort(sorter.highestToLowest("score"));
 
     listLabels.innerHTML =  
     `<li class = "txt-ranking">
@@ -52,7 +52,7 @@ function showRanking(isInputNeeded) {
             <span id="rank">${index+1}</span>
             <span id="name">${highScore.name}</span>
             <span id="score">${highScore.score}</span>
-            <span id="time">${secondsToMinSec(highScore.time)}</span>
+            <span id="time">${StringUtils.secondsToMMSS(highScore.time)}</span>
             </li>`;
 
         } else {
@@ -64,7 +64,7 @@ function showRanking(isInputNeeded) {
             <button>OK</button>
             </span>
             <span id="score">${highScore.score}</span>
-            <span id="time">${secondsToMinSec(highScore.time)}</span>
+            <span id="time">${StringUtils.secondsToMMSS(highScore.time)}</span>
             </li>`;
 
             if (index > 16) listRanking.scrollTo(0, i*30);
@@ -93,7 +93,7 @@ function showRanking(isInputNeeded) {
 function setRankName(index){
     const input = document.querySelector(`.content-ranking ul.scores li#rank-row-${index} input`);
     let name = input.value;
-    if (helperString.isBlank(name)) name = "Você";
+    if (StringUtils.isBlank(name)) name = "Você";
 
     highScores[index].name = name;
     showRanking(false);
