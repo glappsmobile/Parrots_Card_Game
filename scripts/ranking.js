@@ -60,20 +60,18 @@ function showRanking(isInputNeeded) {
             `<li id="rank-row-${index}"class="txt-ranking">
             <span id="rank">${index+1}</span>
             <span id="name">
-            <input class="input-rank" type="text" maxlength=12 autofocus/>
+            <input class="input-rank" type="text" maxlength=12/>
             <button>OK</button>
             </span>
             <span id="score">${highScore.score}</span>
             <span id="time">${StringUtils.secondsToMMSS(highScore.time)}</span>
             </li>`;
 
-            if (index > 16) listRanking.scrollTo(0, i*30);
-
             setTimeout(() => {
             const input = listRanking.querySelector(`li#rank-row-${index} input`);
             const btn = listRanking.querySelector(`li#rank-row-${index} button`);
             btn.setAttribute("onClick", `setRankName(${index})`);
-
+            input.focus();
             input.addEventListener("keyup", function(event) {
                 // WHEN "ENTER" KEY RELEASED, DO: 
                 if (event.keyCode === 13) {
@@ -81,8 +79,7 @@ function showRanking(isInputNeeded) {
                   setRankName(index);
                 }
             });
-          }, ONE_SECOND);
-
+          }, 100);
         }
     });
 

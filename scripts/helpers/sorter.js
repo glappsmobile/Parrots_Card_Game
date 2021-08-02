@@ -4,7 +4,7 @@ const sorter = {
     },
     highestToLowest: (property) => {
         return (a, b) => {
-            const hasParameter = !!property; 
+            const hasParameter = property !== undefined; 
             if (!hasParameter){
                 return b - a;
             } else if (hasParameter){
