@@ -21,7 +21,7 @@ function askSize(){
         isCorrectLength = Boolean(length >= 4 && length <= 14);
     } 
 
-    gerarCartas(length);
+    generateCards(length);
 }
 
 function defineCards(length){
@@ -32,10 +32,11 @@ function defineCards(length){
         cards.push(parrots[i]);
         cards.push(parrots[i]);
     }
+    
     cards.sort(sorter.random());
 }
 
-function gerarCartas(length){
+function generateCards(length){
     cCards = length;
     defineCards(length);
     const ctnCards = document.querySelector(".ctn-cards");
@@ -62,6 +63,7 @@ function reveal(card){
         const gif = card.querySelector(".back-face img");
 
         card.classList.add("active");
+        //RESTARTING GIF ANIMATION
         gif.setAttribute("src", gif.src);
 
         const isComparing = lastCard !== undefined;
@@ -119,7 +121,7 @@ function stopTimer(){
     clearInterval(intervals[0].id);
 }
 
-function cleanGame(){
+function clearGame(){
     if (intervals.length > 0) stopTimer();
     elapsedSeconds = 0;
     score = 0;
@@ -137,6 +139,14 @@ function cleanGame(){
     tvScore.innerHTML = "SCORE: 0"
 }
 
+function restartGame(){
+    const doRestart = confirm("Deseja iniciar uma nova partida?");
+
+    if (doRestart){
+        startGame();
+    }
+}
+
 function gameOver(){
     stopTimer();
     setTimeout(() => {
@@ -147,7 +157,7 @@ function gameOver(){
 }
 
 function startGame(){
-    cleanGame();
+    clearGame();
     timer();
     askSize();
 }
