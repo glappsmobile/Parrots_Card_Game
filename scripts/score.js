@@ -1,3 +1,11 @@
+const MULTIPLIER_ODDS = "Odds Multiplier";
+const MULTIPLIER_TIME = "Time Multiplier";
+const MULTIPLIER_PLAYS = "Plays Multiplier";
+
+const ODDS_WEIGHT = 3;
+const SCORE_MAX_TIME = 60;
+const SCORE_SEEN_DIFFICULTY = 15;
+
 function getMultiplier(multiplier){
     switch(multiplier){
         case MULTIPLIER_ODDS:

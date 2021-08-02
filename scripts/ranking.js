@@ -1,3 +1,8 @@
+const highScoreReference = {rank:"RANK", name: "NOME", score: "SCORE", time: "TEMPO"};
+
+const randomNames = ["Australopithecus", "Darwin", "Glauco", "Beta Tester", "Driven", "Pirula", "Pelvis", "ImpPlant", "LateNever", "HarpyWitch", "MiGrain", "Possumiss", "Gigadude", "Redemptor", "Astropower", "Plover", "OculusVision", "Dunning", "Kruger"]
+const highScores = [];
+
 function generateFakeRankingData(){
     randomNames.sort(sorter.random());
 

@@ -1,3 +1,7 @@
+const parrots = ["bobrossparrot", "explodyparrot", "fiestaparrot", "metalparrot", "revertitparrot", "tripletsparrot", "unicornparrot"];
+const ONE_SECOND = 1000;
+const DELAY_OVERLAY = 200;
+
 let cards = [];
 let match = "";
 let lastCard = undefined;
